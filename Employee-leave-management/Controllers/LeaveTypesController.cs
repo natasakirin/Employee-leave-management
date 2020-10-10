@@ -6,11 +6,13 @@ using AutoMapper;
 using Employee_leave_management.Data;
 using Employee_leave_management.Interfaces;
 using Employee_leave_management.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Employee_leave_management.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class LeaveTypesController : Controller
     {
         private readonly ILeaveTypeRepository _repo;
@@ -22,7 +24,7 @@ namespace Employee_leave_management.Controllers
             _mapper = mapper;
         }
 
-
+        
         // GET: LeaveTypesController
         public ActionResult Index()
         {
