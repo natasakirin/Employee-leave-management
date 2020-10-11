@@ -43,7 +43,7 @@ namespace Employee_leave_management
 
             services.AddAutoMapper(typeof(Maps));
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<Employee>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -55,7 +55,7 @@ namespace Employee_leave_management
         public void Configure(
             IApplicationBuilder app, 
             IWebHostEnvironment env,
-            UserManager<IdentityUser> userManager,
+            UserManager<Employee> userManager,
             RoleManager<IdentityRole> roleManager
         )
         {

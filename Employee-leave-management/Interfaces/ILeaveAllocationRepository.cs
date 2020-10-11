@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Employee_leave_management.Interfaces
 {
-    interface ILeaveAllocationRepository : IRepositoryBase<LeaveAllocation>
+    public interface ILeaveAllocationRepository : IRepositoryBase<LeaveAllocation>
     {
+        bool CheckAllocation(int leavetypeid,string employeeid);
+
+        ICollection<LeaveAllocation> GetAllocationsByEmployee(string id);
     }
 }
