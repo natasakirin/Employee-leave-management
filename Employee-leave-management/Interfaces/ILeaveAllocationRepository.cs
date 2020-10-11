@@ -8,8 +8,8 @@ namespace Employee_leave_management.Interfaces
 {
     public interface ILeaveAllocationRepository : IRepositoryBase<LeaveAllocation>
     {
-        bool CheckAllocation(int leavetypeid,string employeeid);
-
-        ICollection<LeaveAllocation> GetAllocationsByEmployee(string id);
+        bool CheckAllocation(int leavetypeid, string employeeid);
+        ICollection<LeaveAllocation> GetLeaveAllocationsByEmployee(string employeeid);
+        LeaveAllocation GetLeaveAllocationsByEmployeeAndType(string employeeid, int leavetypeid);
     }
 }
