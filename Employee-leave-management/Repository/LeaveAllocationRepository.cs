@@ -17,75 +17,215 @@ namespace Employee_leave_management.Repository
             _db = db;
         }
 
-        public bool CheckAllocation(int leavetypeid, string employeeid)
+
+        #region CHECK ALLOCATION
+        /* Synchronous functions */
+        //public bool CheckAllocation(int leavetypeid, string employeeid)
+        //{
+        //    var period = DateTime.Now.Year;
+        //    return FindAll()
+        //        .Where(x => x.EmployeeId == employeeid && x.LeaveTypeId == leavetypeid && x.Period == period)
+        //        .Any();
+        //}
+
+        /* Asynchronous functions */
+
+        public async Task<bool> CheckAllocation(int leavetypeid, string employeeid)
         {
             var period = DateTime.Now.Year;
-            return FindAll()
-                .Where(x => x.EmployeeId == employeeid && x.LeaveTypeId == leavetypeid && x.Period == period)
+            var allocations = await FindAll();
+            return allocations
+                .Where(x => x.EmployeeId == employeeid 
+                    && x.LeaveTypeId == leavetypeid 
+                    && x.Period == period)
                 .Any();
         }
 
-        public bool Create(LeaveAllocation entity)
+        #endregion
+
+
+        #region CREATE
+        /* Synchronous functions */
+        //public bool Create(LeaveAllocation entity)
+        //{
+        //    _db.LeaveAllocations.Add(entity);
+        //    return Save();
+        //}
+
+        /* Asynchronous functions */
+        public async Task<bool> Create(LeaveAllocation entity)
         {
-            _db.LeaveAllocations.Add(entity);
-            return Save();
+            await _db.LeaveAllocations.AddAsync(entity);
+            return await Save();
         }
 
-        public bool Delete(LeaveAllocation entity)
+        #endregion
+
+
+        #region DELETE
+
+        /* Synchronous functions */
+        //public bool Delete(LeaveAllocation entity)
+        //{
+        //    _db.LeaveAllocations.Remove(entity);
+        //    return Save();
+        //}
+
+        /* Asynchronous functions */
+        public async Task<bool> Delete(LeaveAllocation entity)
         {
             _db.LeaveAllocations.Remove(entity);
-            return Save();
+            return await Save();
         }
+        #endregion
 
-        public ICollection<LeaveAllocation> FindAll()
+
+        #region FIND ALL
+
+        /* Synchronous functions */
+        //public ICollection<LeaveAllocation> FindAll()
+        //{
+        //    return _db.LeaveAllocations
+        //        .Include(x => x.LeaveType)
+        //        .ToList();
+        //}
+
+        /* Asynchronous functions */
+        public async Task<ICollection<LeaveAllocation>> FindAll()
         {
-            return _db.LeaveAllocations
+            return await _db.LeaveAllocations
                 .Include(x => x.LeaveType)
-                .ToList();
+                .ToListAsync();
         }
+        #endregion
 
-        public LeaveAllocation FindById(int id)
+
+        #region FIND BY ID
+
+        /* Synchronous functions */
+        //public LeaveAllocation FindById(int id)
+        //{
+        //    var leaveAllocation = _db.LeaveAllocations
+        //         .Include(x => x.LeaveType)
+        //         .Include(x => x.Employee)
+        //         .FirstOrDefault(x => x.Id == id);
+
+        //    return leaveAllocation;
+        //}
+
+        /* Asynchronous functions */
+        public async Task<LeaveAllocation> FindById(int id)
         {
-            var leaveAllocation = _db.LeaveAllocations
+            var leaveAllocation = await _db.LeaveAllocations
                  .Include(x => x.LeaveType)
                  .Include(x => x.Employee)
-                 .FirstOrDefault(x => x.Id == id);
+                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return leaveAllocation;
         }
+        #endregion
 
-        public ICollection<LeaveAllocation> GetLeaveAllocationsByEmployee(string employeeid)
+
+        #region GetLeaveAllocationsByEmployee
+
+        /* Synchronous functions */
+        //public ICollection<LeaveAllocation> GetLeaveAllocationsByEmployee(string employeeid)
+        //{
+        //    var period = DateTime.Now.Year;
+        //    return FindAll()
+        //        .Where(x => x.EmployeeId == employeeid && x.Period == period)
+        //        .ToList();
+        //}
+
+        /* Asynchronous functions */
+        public async Task<ICollection<LeaveAllocation>> GetLeaveAllocationsByEmployee(string employeeid)
         {
             var period = DateTime.Now.Year;
-            return FindAll()
+            var allocations = await FindAll();
+            return allocations
                 .Where(x => x.EmployeeId == employeeid && x.Period == period)
                 .ToList();
         }
 
+        #endregion
 
-        public LeaveAllocation GetLeaveAllocationsByEmployeeAndType(string employeeid, int leaveTypeId)
+
+        #region GetLeaveAllocationsByEmployeeAndType
+
+        /* Synchronous functions */
+
+        //public LeaveAllocation GetLeaveAllocationsByEmployeeAndType(string employeeid, int leaveTypeId)
+        //{
+        //    var period = DateTime.Now.Year;
+        //    return FindAll()
+        //        .FirstOrDefault(x => x.EmployeeId == employeeid && x.Period == period && x.LeaveTypeId == leaveTypeId);
+        //}
+
+        /* Asynchronous functions */
+        public async Task<LeaveAllocation> GetLeaveAllocationsByEmployeeAndType(string employeeid, int leaveTypeId)
         {
             var period = DateTime.Now.Year;
-            return FindAll()
-                .FirstOrDefault(x => x.EmployeeId == employeeid && x.Period == period && x.LeaveTypeId == leaveTypeId);
+            var allocations = await FindAll();
+            return allocations
+                .FirstOrDefault(x => x.EmployeeId == employeeid 
+                                && x.Period == period 
+                                && x.LeaveTypeId == leaveTypeId);
         }
 
+        #endregion
 
-        public bool isExists(int id)
+
+        #region isExists
+
+        /* Synchronous functions */
+
+        //public bool isExists(int id)
+        //{
+        //    var exists = _db.LeaveAllocations.Any(x => x.Id == id);
+        //    return exists;
+        //}
+
+        /* Asynchronous functions */
+        public async Task<bool> isExists(int id)
         {
-            var exists = _db.LeaveAllocations.Any(x => x.Id == id);
+            var exists = await _db.LeaveAllocations.AnyAsync(x => x.Id == id);
             return exists;
         }
 
-        public bool Save()
-        {
-            return _db.SaveChanges() > 0;
-        }
+        #endregion
 
-        public bool Update(LeaveAllocation entity)
+
+        #region Save
+
+        /* Synchronous functions */
+        //public bool Save()
+        //{
+        //    return _db.SaveChanges() > 0;
+        //}
+
+        /* Asynchronous functions */
+        public async Task<bool> Save()
+        {
+            return await _db.SaveChangesAsync() > 0;
+        }
+        #endregion
+
+
+        #region UPDATE
+        /* Synchronous functions */
+        //public bool Update(LeaveAllocation entity)
+        //{
+        //    _db.LeaveAllocations.Update(entity);
+        //    return Save();
+        //}
+
+
+        /* Asynchronous functions */
+        public async Task<bool> Update(LeaveAllocation entity)
         {
             _db.LeaveAllocations.Update(entity);
-            return Save();
+            return await Save();
         }
+        #endregion
     }
 }

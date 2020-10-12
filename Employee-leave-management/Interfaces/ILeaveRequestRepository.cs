@@ -8,6 +8,12 @@ namespace Employee_leave_management.Interfaces
 {
     public interface ILeaveRequestRepository : IRepositoryBase<LeaveRequest>
     {
-        ICollection<LeaveRequest> GetLeaveRequestsByEmployee(string employeeid);
+        /* Synchronous functions */
+        //ICollection<LeaveRequest> GetLeaveRequestsByEmployee(string employeeid);
+
+
+        /* Asynchronous functions */
+        Task <ICollection<LeaveRequest>> GetLeaveRequestsByEmployee(string employeeid);
+
     }
 }

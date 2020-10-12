@@ -35,11 +35,28 @@ namespace Employee_leave_management.Controllers
         }
 
 
+        #region Index (FindAll)
         // GET: LeaveAllocationController
-        public ActionResult Index()
+
+        /* Synchronous functions */
+        //public ActionResult Index()
+        //{
+        //    var leavetypes = _leaverepo.FindAll().ToList();
+        //    var mappedLeaveTypes = _mapper.Map<List<LeaveType>, List<LeaveTypeVM>>(leavetypes);
+        //    var model = new CreateLeaveAllocationVM
+        //    {
+        //        LeaveTypes = mappedLeaveTypes,
+        //        NumberUpdated = 0
+        //    };
+
+        //    return View(model);
+        //}
+
+        /* Asynchronous functions */
+        public async Task<ActionResult> Index()
         {
-            var leavetypes = _leaverepo.FindAll().ToList();
-            var mappedLeaveTypes = _mapper.Map<List<LeaveType>, List<LeaveTypeVM>>(leavetypes);
+            var leavetypes = await _leaverepo.FindAll();
+            var mappedLeaveTypes = _mapper.Map<List<LeaveType>, List<LeaveTypeVM>>(leavetypes.ToList());
             var model = new CreateLeaveAllocationVM
             {
                 LeaveTypes = mappedLeaveTypes,
@@ -48,17 +65,52 @@ namespace Employee_leave_management.Controllers
 
             return View(model);
         }
+        #endregion
 
 
-        public ActionResult SetLeave(int id)
+        #region SetLeave
+        /* Synchronous functions */
+        //public ActionResult SetLeave(int id)
+        //{
+        //    var leavetype = _leaverepo.FindById(id);
+        //    var employees = _userManager.GetUsersInRoleAsync("Employee").Result;
+
+        //    foreach(var emp in employees)
+        //    {
+        //        /* in case that leaveallcoation for this type of leave for this employee already exists */
+        //        if(_leaveallocationrepo.CheckAllocation(id, emp.Id))
+        //        {
+        //            continue;
+        //        }
+
+
+        //        var allocation = new LeaveAllocationVM
+        //        {
+        //            DateCreated = DateTime.Now,
+        //            EmployeeId = emp.Id,
+        //            LeaveTypeId = id,
+        //            NumberOfDays = leavetype.DefaultDays,
+        //            Period = DateTime.Now.Year
+        //        };
+
+        //        var leaveallocation = _mapper.Map<LeaveAllocation>(allocation);
+
+        //        _leaveallocationrepo.Create(leaveallocation);
+        //    }
+
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+        /* Asynchronous functions */
+        public async Task<ActionResult> SetLeave(int id)
         {
-            var leavetype = _leaverepo.FindById(id);
-            var employees = _userManager.GetUsersInRoleAsync("Employee").Result;
+            var leavetype = await _leaverepo.FindById(id);
+            var employees = await _userManager.GetUsersInRoleAsync("Employee");
 
-            foreach(var emp in employees)
+            foreach (var emp in employees)
             {
                 /* in case that leaveallcoation for this type of leave for this employee already exists */
-                if(_leaveallocationrepo.CheckAllocation(id, emp.Id))
+                if (await _leaveallocationrepo.CheckAllocation(id, emp.Id))
                 {
                     continue;
                 }
@@ -75,26 +127,58 @@ namespace Employee_leave_management.Controllers
 
                 var leaveallocation = _mapper.Map<LeaveAllocation>(allocation);
 
-                _leaveallocationrepo.Create(leaveallocation);
+                await _leaveallocationrepo.Create(leaveallocation);
             }
 
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
 
-        public ActionResult ListEmployees()
+        #region ListEmployees
+        /* Synchronous functions */
+        //public ActionResult ListEmployees()
+        //{
+        //    var employees = _userManager.GetUsersInRoleAsync("Employee").Result;
+        //    var model = _mapper.Map<List<EmployeeVM>>(employees);
+        //    return View(model);
+        //}
+
+        /* Asynchronous functions */
+        public async Task<ActionResult> ListEmployees()
         {
-            var employees = _userManager.GetUsersInRoleAsync("Employee").Result;
+            var employees = await _userManager.GetUsersInRoleAsync("Employee");
             var model = _mapper.Map<List<EmployeeVM>>(employees);
             return View(model);
         }
+        #endregion
+
+
+        #region Details
+        /* Synchronous functions */
 
         // GET: LeaveAllocationController/Details/5
-        public ActionResult Details(string id)
+        //public ActionResult Details(string id)
+        //{
+        //    var employee = _mapper.Map<EmployeeVM>(_userManager.FindByIdAsync(id).Result);
+
+        //    var allocations = _mapper.Map<List<LeaveAllocationVM>>(_leaveallocationrepo.GetLeaveAllocationsByEmployee(id));
+
+        //    var model = new ViewAllocationsVM
+        //    {
+        //        Employee = employee,
+        //        LeaveAllocations = allocations
+        //    };
+
+        //    return View(model);
+        //}
+
+        /* Asynchronous functions */
+        public async Task<ActionResult> Details(string id)
         {
-            var employee = _mapper.Map<EmployeeVM>(_userManager.FindByIdAsync(id).Result);
-            
-            var allocations = _mapper.Map<List<LeaveAllocationVM>>(_leaveallocationrepo.GetLeaveAllocationsByEmployee(id));
+            var employee = _mapper.Map<EmployeeVM>(await _userManager.FindByIdAsync(id));
+
+            var allocations = _mapper.Map<List<LeaveAllocationVM>>(await _leaveallocationrepo.GetLeaveAllocationsByEmployee(id));
 
             var model = new ViewAllocationsVM
             {
@@ -104,6 +188,12 @@ namespace Employee_leave_management.Controllers
 
             return View(model);
         }
+
+        #endregion
+
+
+        #region Create
+        /* Synchronous functions */
 
         // GET: LeaveAllocationController/Create
         public ActionResult Create()
@@ -126,10 +216,56 @@ namespace Employee_leave_management.Controllers
             }
         }
 
+        /* Asynchronous functions */
+
+        #endregion
+
+
+        #region Edit
+        /* Synchronous functions */
+
+        //// GET: LeaveAllocationController/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //    var leaveallocation = _leaveallocationrepo.FindById(id);
+        //    var model = _mapper.Map<EditLeaveAllocationVM>(leaveallocation);
+        //    return View(model);
+        //}
+
+        //// POST: LeaveAllocationController/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(EditLeaveAllocationVM model)
+        //{
+        //    try
+        //    {
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return View(model);
+        //        }
+
+        //        var record = _leaveallocationrepo.FindById(model.Id);
+        //        record.NumberOfDays = model.NumberOfDays;
+
+        //        var isSuccess = _leaveallocationrepo.Update(record);
+        //        if (!isSuccess)
+        //        {
+        //            ModelState.AddModelError("", "Error while saving");
+        //            return View(model);
+        //        }
+        //        return RedirectToAction(nameof(Details), new { id = model.EmployeeId });
+        //    }
+        //    catch
+        //    {
+        //        return View(model);
+        //    }
+        //}
+
+        /* Asynchronous functions */
         // GET: LeaveAllocationController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var leaveallocation = _leaveallocationrepo.FindById(id);
+            var leaveallocation = await _leaveallocationrepo.FindById(id);
             var model = _mapper.Map<EditLeaveAllocationVM>(leaveallocation);
             return View(model);
         }
@@ -137,7 +273,7 @@ namespace Employee_leave_management.Controllers
         // POST: LeaveAllocationController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EditLeaveAllocationVM model)
+        public async Task<ActionResult> Edit(EditLeaveAllocationVM model)
         {
             try
             {
@@ -146,10 +282,10 @@ namespace Employee_leave_management.Controllers
                     return View(model);
                 }
 
-                var record = _leaveallocationrepo.FindById(model.Id);
+                var record = await _leaveallocationrepo.FindById(model.Id);
                 record.NumberOfDays = model.NumberOfDays;
-                
-                var isSuccess = _leaveallocationrepo.Update(record);
+
+                var isSuccess = await _leaveallocationrepo.Update(record);
                 if (!isSuccess)
                 {
                     ModelState.AddModelError("", "Error while saving");
@@ -163,6 +299,11 @@ namespace Employee_leave_management.Controllers
             }
         }
 
+        #endregion
+
+
+        #region Delete
+        /* Synchronous functions */
         // GET: LeaveAllocationController/Delete/5
         public ActionResult Delete(int id)
         {
@@ -183,5 +324,10 @@ namespace Employee_leave_management.Controllers
                 return View();
             }
         }
+
+
+        /* Asynchronous functions */
+
+        #endregion
     }
 }

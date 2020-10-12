@@ -8,6 +8,11 @@ namespace Employee_leave_management.Interfaces
 {
     public interface ILeaveTypeRepository : IRepositoryBase<LeaveType>
     {
-        ICollection<LeaveType> GetEmployeesByLeaveType(int id);
+        /* Synchronous functions */
+        //ICollection<LeaveType> GetEmployeesByLeaveType(int id);
+
+
+        /* Asynchronous functions */
+        Task<ICollection<LeaveType>> GetEmployeesByLeaveType(int id);
     }
 }

@@ -18,60 +18,162 @@ namespace Employee_leave_management.Repository
         }
 
 
-        public bool Create(LeaveRequest entity)
+        #region CREATE
+        /* Synchronous functions */
+        //public bool Create(LeaveRequest entity)
+        //{
+        //    _db.LeaveRequests.Add(entity);
+        //    return Save();
+        //}
+
+        /* Asynchronous functions */
+        public async Task<bool> Create(LeaveRequest entity)
         {
-            _db.LeaveRequests.Add(entity);
-            return Save();
+            await _db.LeaveRequests.AddAsync(entity);
+            return await Save();
         }
 
-        public bool Delete(LeaveRequest entity)
+        #endregion
+
+
+        #region DELETE
+
+        /* Synchronous functions */
+        //public bool Delete(LeaveRequest entity)
+        //{
+        //    _db.LeaveRequests.Remove(entity);
+        //    return Save();
+        //}
+
+        /* Asynchronous functions */
+        public async Task<bool> Delete(LeaveRequest entity)
         {
             _db.LeaveRequests.Remove(entity);
-            return Save();
+            return await Save();
         }
+        #endregion
 
-        public ICollection<LeaveRequest> FindAll()
+
+        #region FIND ALL
+
+        /* Synchronous functions */
+        //public ICollection<LeaveRequest> FindAll()
+        //{
+        //    return _db.LeaveRequests
+        //        .Include(x => x.RequestingEmployee)
+        //        .Include(x => x.ApprovedBy)
+        //        .Include(x => x.LeaveType)
+        //        .ToList();
+        //}
+
+        /* Asynchronous functions */
+        public async Task<ICollection<LeaveRequest>> FindAll()
         {
-            return _db.LeaveRequests
+            return await _db.LeaveRequests
                 .Include(x => x.RequestingEmployee)
                 .Include(x => x.ApprovedBy)
                 .Include(x => x.LeaveType)
-                .ToList();
+                .ToListAsync();
         }
 
-        public LeaveRequest FindById(int id)
+        #endregion
+
+
+        #region FIND BY ID
+
+        /* Synchronous functions */
+        //public LeaveRequest FindById(int id)
+        //{
+        //    return _db.LeaveRequests
+        //        .Include(x => x.RequestingEmployee)
+        //        .Include(x => x.ApprovedBy)
+        //        .Include(x => x.LeaveType)
+        //        .FirstOrDefault(x => x.Id == id);
+        //}
+
+        /* Asynchronous functions */
+        public async Task<LeaveRequest> FindById(int id)
         {
-            return _db.LeaveRequests
+            return await _db.LeaveRequests
                 .Include(x => x.RequestingEmployee)
                 .Include(x => x.ApprovedBy)
                 .Include(x => x.LeaveType)
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
+        #endregion
 
 
-        public ICollection<LeaveRequest> GetLeaveRequestsByEmployee(string employeeid)
+        #region GetLeaveRequestsByEmployee
+
+        /* Synchronous functions */
+        //public ICollection<LeaveRequest> GetLeaveRequestsByEmployee(string employeeid)
+        //{
+        //    var leaveRequests = FindAll()
+        //        .Where(x => x.RequestingEmployeeId == employeeid)
+        //        .ToList();
+        //    return leaveRequests;
+        //}
+
+        /* Synchronous functions */
+        public async Task<ICollection<LeaveRequest>> GetLeaveRequestsByEmployee(string employeeid)
         {
-            var leaveRequests = FindAll()
-                .Where(q => q.RequestingEmployeeId == employeeid)
+            var leaveRequests = await FindAll();
+            return leaveRequests
+                .Where(x => x.RequestingEmployeeId == employeeid)
                 .ToList();
-            return leaveRequests;
-        }
 
-        public bool isExists(int id)
+        }
+        #endregion
+
+
+        #region isExists
+
+        /* Synchronous functions */
+        //public bool isExists(int id)
+        //{
+        //    var exists = _db.LeaveRequests.Any(x => x.Id == id);
+        //    return exists;
+        //}
+
+        /* Asynchronous functions */
+        public async Task<bool> isExists(int id)
         {
-            var exists = _db.LeaveRequests.Any(x => x.Id == id);
+            var exists = await _db.LeaveRequests.AnyAsync(x => x.Id == id);
             return exists;
         }
+        #endregion
 
-        public bool Save()
+
+        #region Save
+
+        /* Synchronous functions */
+        //public bool Save()
+        //{
+        //    return _db.SaveChanges() > 0;
+        //}
+
+        /* Asynchronous functions */
+        public async Task<bool> Save()
         {
-            return _db.SaveChanges() > 0;
+            return await _db.SaveChangesAsync() > 0;
         }
+        #endregion
 
-        public bool Update(LeaveRequest entity)
+
+        #region UPDATE
+        /* Synchronous functions */
+        //public bool Update(LeaveRequest entity)
+        //{
+        //    _db.LeaveRequests.Update(entity);
+        //    return Save();
+        //}
+
+        /* Asynchronous functions */
+        public async Task<bool> Update(LeaveRequest entity)
         {
             _db.LeaveRequests.Update(entity);
-            return Save();
+            return await Save();
         }
+        #endregion
     }
 }
