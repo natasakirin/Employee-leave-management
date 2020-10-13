@@ -12,7 +12,6 @@ namespace Employee_leave_management.Mappings
     {
         public Maps()
         {
-            /* source .... is mapped into ...  destination */
             CreateMap<LeaveType, LeaveTypeVM>().ReverseMap();
             CreateMap<LeaveRequest, LeaveRequestVM>().ReverseMap();
             CreateMap<LeaveAllocation, LeaveAllocationVM>().ReverseMap();

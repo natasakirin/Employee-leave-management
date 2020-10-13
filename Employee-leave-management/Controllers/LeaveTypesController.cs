@@ -28,17 +28,6 @@ namespace Employee_leave_management.Controllers
 
         #region Index (FindAll)
         // GET: LeaveTypesController
-
-        /* Synchronous functions */
-        //public ActionResult Index()
-        //{
-        //    var leavetypes = _repo.FindAll().ToList();
-        //    /* Mapper: Map<source, destination>(what objects should be mapped) */
-        //    var model = _mapper.Map<List<LeaveType>, List<LeaveTypeVM>>(leavetypes);
-        //    return View(model);
-        //}
-
-        /* Asynchronous functions */
         public async Task<ActionResult> Index()
         {
             var leavetypes = await _repo.FindAll();
@@ -51,24 +40,6 @@ namespace Employee_leave_management.Controllers
 
         #region Details 
         // GET: LeaveTypesController/Details/5
-
-        /* Synchronous functions */
-        //public ActionResult Details(int id)
-        //{
-        //    if (!_repo.isExists(id))
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var leavetype = _repo.FindById(id);
-
-        //    /* we're mapping LeaveType (data class) into LeaveTypeVM */
-        //    var model = _mapper.Map<LeaveTypeVM>(leavetype);
-
-        //    return View(model);
-        //}
-
-        /* Asynchronous functions */
         public async Task<ActionResult> Details(int id)
         {
             var isExists = await _repo.isExists(id);
@@ -90,49 +61,6 @@ namespace Employee_leave_management.Controllers
 
         #region CREATE
         // GET: LeaveTypesController/Create
-
-        /* Synchronous functions */
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: LeaveTypesController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(LeaveTypeVM model)
-        //{
-        //    try
-        //    {
-        //        if(!ModelState.IsValid)
-        //        {
-        //            return View(model);
-        //        }
-
-        //        /* I want the model to be mapped into LeaveType (from the DB) */
-        //        var leavetype = _mapper.Map<LeaveType>(model);
-        //        leavetype.DateCreated = DateTime.Now;
-
-        //        var isSuccess = _repo.Create(leavetype);
-
-        //        if(!isSuccess)
-        //        {
-        //            ModelState.AddModelError("", "Something went wrong...");
-        //            return View(model);
-        //        }
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        ModelState.AddModelError("", "Something went wrong...");
-        //        return View(model);
-        //    }
-        //}
-
-
-
-        /* Asynchronous functions */
         public ActionResult Create()
         {
             return View();
@@ -175,53 +103,6 @@ namespace Employee_leave_management.Controllers
 
         #region Edit
         // GET: LeaveTypesController/Edit/5
-
-        /* Synchronous functions */
-        //public ActionResult Edit(int id)
-        //{
-        //    if(!_repo.isExists(id))
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var leavetype = _repo.FindById(id);
-        //    var model = _mapper.Map<LeaveTypeVM>(leavetype);
-
-        //    return View(model);
-        //}
-
-        //// POST: LeaveTypesController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(LeaveTypeVM model)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            return View(model);
-        //        }
-
-        //        var leavetype = _mapper.Map<LeaveType>(model);
-
-        //        var isSuccess = _repo.Update(leavetype);
-
-        //        if (!isSuccess)
-        //        {
-        //            ModelState.AddModelError("", "Something went wrong...");
-        //            return View(model);
-        //        }
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        ModelState.AddModelError("", "Something went wrong...");
-        //        return View(model);
-        //    }
-        //}
-
-        /* Asynchronous functions */
         public async Task<ActionResult> Edit(int id)
         {
             var isExists = await _repo.isExists(id);
@@ -272,7 +153,6 @@ namespace Employee_leave_management.Controllers
         #region Delete
         // GET: LeaveTypesController/Delete/5
 
-        /* Synchronous functions */
         public async Task<ActionResult> Delete(int id)
         {
             var leavetype = await _repo.FindById(id);
